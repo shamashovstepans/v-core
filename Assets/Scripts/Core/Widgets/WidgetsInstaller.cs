@@ -17,7 +17,9 @@ namespace Core.Widgets
             builder.Register<PopupRegistry>(Lifetime.Singleton).As<IPopupRegistry>();
             builder.Register<ScreenRegistry>(Lifetime.Singleton).As<IScreenRegistry>();
             builder.Register<ViewLayerRegistry>(Lifetime.Singleton).As<IViewLayerRegistry>();
+            builder.Register<ViewLayerOrder>(Lifetime.Singleton).As<IViewLayerOrder>();
             builder.Register<CameraStack>(Lifetime.Singleton).As<ICameraStack>();
+            builder.Register<ViewLayerFactory>(Lifetime.Transient).As<IViewLayerFactory>();
 
             builder.RegisterWidget<RootWidgetInstaller>();
             builder.RegisterWidget<ScreenManagerWidgetInstaller>();

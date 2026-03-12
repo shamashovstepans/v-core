@@ -61,5 +61,14 @@ namespace Core.Widgets.ViewLayer
                 _cameras.RemoveAt(index);
             }
         }
+
+        public void Rebuild(IReadOnlyList<Camera> camerasInOrder)
+        {
+            foreach (var camera in _cameras.ToArray())
+                Unregister(camera);
+
+            foreach (var camera in camerasInOrder)
+                Register(camera);
+        }
     }
 }
