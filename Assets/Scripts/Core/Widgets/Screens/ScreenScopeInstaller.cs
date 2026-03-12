@@ -1,5 +1,6 @@
 using Core.Scopes;
 using Core.Scopes.Tooling;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -23,6 +24,11 @@ namespace Core.Widgets.Screens
             builder.RegisterInstance(_view).AsSelf().As<IWidgetView>().As<IScreenView>();
             builder.RegisterMainScopeTag(_screenId, ScopeGroup.Widget);
             builder.RegisterScopeTag($"View: {_view.GetType().Name}", ScopeGroup.General);
+            builder.RegisterBuildCallback(_ =>
+            {
+                if (_view is MonoBehaviour mb)
+                    HierarchyScopeMarker.AddTo(mb.gameObject, ScopeGroup.Widget);
+            });
             _installer.Install(builder);
         }
     }

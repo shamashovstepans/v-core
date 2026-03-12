@@ -2,6 +2,7 @@ using System;
 using Core.Scopes;
 using Core.Scopes.Cheats;
 using Core.Scopes.Tooling;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -33,6 +34,11 @@ namespace Core.Widgets
             }
             builder.RegisterMainScopeTag(_widgetId, ScopeGroup.Widget);
             builder.RegisterScopeTag($"View: {_view.GetType().Name}", ScopeGroup.General);
+            builder.RegisterBuildCallback(_ =>
+            {
+                if (_view is MonoBehaviour mb)
+                    HierarchyScopeMarker.AddTo(mb.gameObject, ScopeGroup.Widget);
+            });
             _installer.Install(builder);
         }
     }
