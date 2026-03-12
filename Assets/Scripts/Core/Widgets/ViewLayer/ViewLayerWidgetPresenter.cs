@@ -1,63 +1,37 @@
+using System;
 using Core.Widgets.Popups;
 using Core.Widgets.Screens;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using VContainer.Unity;
 using Object = UnityEngine.Object;
 
 namespace Core.Widgets.ViewLayer
 {
-    internal class ViewLayerWidgetPresenter : IInitializable
+    internal class ViewLayerWidgetPresenter : IInitializable, IDisposable
     {
         private const string PopupManagerPrefabPath = "Prefabs/popup_manager_widget";
         private const string ScreenManagerPrefabPath = "Prefabs/screen_manager_widget";
 
+        private readonly ICameraStack _cameraStack;
         private readonly IWidgetFactory _widgetFactory;
         private readonly ViewLayerView _view;
 
-        public ViewLayerWidgetPresenter(IWidgetFactory widgetFactory, ViewLayerView view)
+        public ViewLayerWidgetPresenter(ICameraStack cameraStack, IWidgetFactory widgetFactory, ViewLayerView view)
         {
+            _cameraStack = cameraStack;
             _widgetFactory = widgetFactory;
             _view = view;
         }
 
         public void Initialize()
         {
-            PushCameraToStack();
+            _cameraStack.Register(_view.Camera);
             CreateScreenAndPopupManagers();
         }
 
-        private void PushCameraToStack()
+        public void Dispose()
         {
-            var viewLayerCamera = _view.Camera;
-            var viewLayerData = viewLayerCamera.GetUniversalAdditionalCameraData();
-
-            var baseCamera = FindBaseCamera(viewLayerCamera);
-            if (baseCamera == null)
-            {
-                viewLayerData.renderType = CameraRenderType.Base;
-            }
-            else
-            {
-                viewLayerData.renderType = CameraRenderType.Overlay;
-                var baseData = baseCamera.GetUniversalAdditionalCameraData();
-                baseData.cameraStack.Add(viewLayerCamera);
-            }
-        }
-
-        private static Camera FindBaseCamera(Camera exclude)
-        {
-            var cameras = Object.FindObjectsByType<Camera>(FindObjectsSortMode.None);
-            foreach (var cam in cameras)
-            {
-                if (cam == exclude)
-                    continue;
-                if (!cam.TryGetComponent<UniversalAdditionalCameraData>(out var data))
-                    continue;
-                if (data.renderType == CameraRenderType.Base)
-                    return cam;
-            }
-            return null;
+            _cameraStack.Unregister(_view.Camera);
         }
 
         private void CreateScreenAndPopupManagers()

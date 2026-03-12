@@ -1,0 +1,26 @@
+---
+description: Every camera must belong to a view layer; no standalone scene cameras
+globs: "**/*.cs"
+alwaysApply: false
+---
+
+# View Layer Cameras
+
+Every camera in the project must be owned by a view layer. Do not place cameras directly in scenes.
+
+## Rule
+
+- **All cameras** live inside view layer prefabs (e.g. `view_layer_widget`)
+- **No accidental cameras** in scene hierarchies – remove the default Main Camera from scene templates; all cameras come from view layers instantiated at runtime
+- The `ICameraStack` composes view layer cameras: first registered = Base, rest = Overlay
+- Do not search the scene for cameras; the camera stack is populated explicitly when view layers initialize
+
+## Pattern
+
+```csharp
+// ✅ GOOD – camera comes from view layer prefab, registered via ICameraStack
+_cameraStack.Register(_view.Camera);
+
+// ❌ BAD – searching scene for cameras
+var cameras = Object.FindObjectsByType<Camera>(...);
+```

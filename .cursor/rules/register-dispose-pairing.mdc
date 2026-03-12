@@ -1,0 +1,43 @@
+---
+description: When registering resources, pair with unregister/dispose logic
+globs: "**/*.cs"
+alwaysApply: false
+---
+
+# Register–Dispose Pairing
+
+When you register something (camera, event handler, provider reference), think about what happens when it is removed. Every registration needs a matching unregistration or cleanup.
+
+## Rule
+
+- **Register** in `Initialize` or constructor → **Unregister** in `Dispose`
+- If a component registers with a shared registry/provider, it must unregister when disposed
+- Do not leave registrations orphaned when scopes or objects are destroyed
+
+## Example
+
+```csharp
+// ✅ GOOD – camera registered on init, unregistered on dispose
+public void Initialize()
+{
+    _cameraStack.Register(_view.Camera);
+}
+
+public void Dispose()
+{
+    _cameraStack.Unregister(_view.Camera);
+}
+```
+
+```csharp
+// ❌ BAD – registers but never unregisters; camera stays in stack after view layer is destroyed
+public void Initialize()
+{
+    _cameraStack.Register(_view.Camera);
+}
+```
+
+## Rationale
+
+- Prevents stale references and leaks
+- Keeps shared state (registries, stacks, providers) consistent with actual lifecycle

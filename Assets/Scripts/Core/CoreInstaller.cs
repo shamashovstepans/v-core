@@ -7,6 +7,7 @@ using Core.Utils;
 using Core.Widgets;
 using Core.Widgets.Popups;
 using Core.Widgets.Screens;
+using Core.Widgets.ViewLayer;
 using VContainer;
 using VContainer.Unity;
 
@@ -27,6 +28,8 @@ namespace Core
             builder.Register<ScreenManagerProvider>(Lifetime.Singleton);
             builder.Register<ScreenManager>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<FeaturesStarter>(Lifetime.Singleton).AsImplementedInterfaces();
+
+            builder.RegisterViewLayer<UIViewLayerInstaller>();
         }
     }
 }
