@@ -1,6 +1,7 @@
 using Core.Widgets.Popups;
 using Core.Widgets.RootWidget;
 using Core.Widgets.Screens;
+using Core.Widgets.ViewLayer;
 using VContainer;
 using VContainer.Unity;
 
@@ -17,6 +18,7 @@ namespace Core.Widgets
             builder.Register<ScreenRegistry>(Lifetime.Singleton).As<IScreenRegistry>();
 
             builder.RegisterWidget<RootWidgetInstaller>();
+            builder.RegisterWidget<ViewLayerWidgetInstaller>();
             builder.RegisterWidget<ScreenManagerWidgetInstaller>();
             builder.RegisterWidget<PopupManagerWidgetInstaller>();
         }

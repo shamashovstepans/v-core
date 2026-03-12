@@ -19,22 +19,28 @@ namespace Core.Widgets.Popups
         private readonly IScopeFactory _scopeFactory;
         private readonly IPopupRegistry _popupRegistry;
         private readonly PopupManagerView _view;
+        private readonly ICameraProvider _cameraProvider;
         private readonly CancellationTokenSource _lifetimeTokenSource = new();
 
         public PopupManagerWidgetPresenter(
             PopupManagerProvider provider,
             IScopeFactory scopeFactory,
             IPopupRegistry popupRegistry,
-            PopupManagerView view)
+            PopupManagerView view,
+            ICameraProvider cameraProvider)
         {
             _provider = provider;
             _scopeFactory = scopeFactory;
             _popupRegistry = popupRegistry;
             _view = view;
+            _cameraProvider = cameraProvider;
         }
 
         public void Initialize()
         {
+            var canvas = _view.CanvasRoot.GetComponent<Canvas>();
+            canvas.worldCamera = _cameraProvider.Camera;
+            canvas.sortingOrder = 1;
             _provider.PopupManagerWidget = this;
         }
 

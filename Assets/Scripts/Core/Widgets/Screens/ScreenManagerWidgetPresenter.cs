@@ -16,6 +16,7 @@ namespace Core.Widgets.Screens
         private readonly IScopeFactory _scopeFactory;
         private readonly IScreenRegistry _screenRegistry;
         private readonly ScreenManagerView _view;
+        private readonly ICameraProvider _cameraProvider;
 
         private IObjectResolver _currentScope;
         private GameObject _currentInstance;
@@ -24,16 +25,19 @@ namespace Core.Widgets.Screens
             ScreenManagerProvider provider,
             IScopeFactory scopeFactory,
             IScreenRegistry screenRegistry,
-            ScreenManagerView view)
+            ScreenManagerView view,
+            ICameraProvider cameraProvider)
         {
             _provider = provider;
             _scopeFactory = scopeFactory;
             _screenRegistry = screenRegistry;
             _view = view;
+            _cameraProvider = cameraProvider;
         }
 
         public void Initialize()
         {
+            _view.CanvasRoot.GetComponent<Canvas>().worldCamera = _cameraProvider.Camera;
             _provider.ScreenManagerWidget = this;
         }
 

@@ -1,0 +1,15 @@
+---
+description: Widget view is bound in scope as self and all its interfaces
+globs: **/*.cs
+alwaysApply: false
+---
+
+# Widget View Binding
+
+Inside a widget scope, the view is registered as itself and all interfaces it implements. This allows child scopes to resolve the view by any of its interfaces (e.g. `ICameraProvider`).
+
+## Pattern
+
+- `WidgetScopeInstaller` registers the view with `AsSelf().As<IWidgetView>()` and `As(iface)` for each additional interface
+- Views that provide cross-cutting concerns (camera, etc.) implement dedicated interfaces
+- Child widgets resolve by interface: `ICameraProvider` instead of concrete `ViewLayerView`

@@ -1,3 +1,4 @@
+using System;
 using Core.Scopes;
 using Core.Scopes.Cheats;
 using Core.Scopes.Tooling;
@@ -21,7 +22,15 @@ namespace Core.Widgets
 
         public void Install(IContainerBuilder builder)
         {
-            builder.RegisterInstance(_view).AsSelf().As<IWidgetView>();
+            var registration = builder.RegisterInstance(_view).AsSelf().As<IWidgetView>();
+            foreach (var iface in _view.GetType().GetInterfaces())
+            {
+                if (iface == typeof(IWidgetView))
+                    continue;
+                if (iface.Assembly == typeof(UnityEngine.Object).Assembly)
+                    continue;
+                registration = registration.As(iface);
+            }
             builder.RegisterMainScopeTag(_widgetId, ScopeGroup.Widget);
             builder.RegisterScopeTag($"View: {_view.GetType().Name}", ScopeGroup.General);
             _installer.Install(builder);
