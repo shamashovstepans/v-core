@@ -119,8 +119,16 @@ namespace Core.Widgets.RootWidget
                 .Select(kv => kv.Value.Instance.transform)
                 .ToList();
 
+            var offsetX = _view.ViewLayerOffsetX;
+
             for (var i = 0; i < ordered.Count; i++)
+            {
                 ordered[i].SetSiblingIndex(i);
+
+                var pos = ordered[i].localPosition;
+                pos.x = i * offsetX;
+                ordered[i].localPosition = pos;
+            }
         }
     }
 }

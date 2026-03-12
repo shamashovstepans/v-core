@@ -124,3 +124,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30235facfd2f34c19b269fc12c4eaac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Core::Core.Widgets.RootWidget.RootWidgetView
+  _viewLayerOffsetX: 200
