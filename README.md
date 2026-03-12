@@ -15,8 +15,6 @@ Unity C# core framework with VContainer DI, feature-based architecture, scopes, 
 - [Newtonsoft.Json](https://docs.unity3d.com/Packages/com.unity.nuget.newtonsoft-json@latest) – JSON config
 - [TextMeshPro](https://docs.unity3d.com/Packages/com.unity.textmeshpro@latest) – UI text
 - [UI Toolkit](https://docs.unity3d.com/Packages/com.unity.ui@latest) – UI framework
-- [AI Navigation](https://docs.unity3d.com/Packages/com.unity.ai.navigation@latest) – AI nav
-
 ## Architecture
 
 - **Core** – Config, FeatureManager, State, Scopes, Widgets, Popups
