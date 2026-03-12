@@ -1,0 +1,9 @@
+{
+  "name": "App",
+  "references": [
+    "Core",
+    "Core.Features",
+    "Features",
+    "VContainer"
+  ]
+}

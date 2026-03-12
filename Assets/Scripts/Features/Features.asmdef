@@ -1,0 +1,10 @@
+{
+  "name": "Features",
+  "references": [
+    "Core",
+    "Core.Features",
+    "UniTask",
+    "Unity.TextMeshPro",
+    "VContainer"
+  ]
+}

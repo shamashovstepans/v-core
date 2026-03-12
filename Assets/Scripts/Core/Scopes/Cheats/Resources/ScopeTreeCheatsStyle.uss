@@ -1,0 +1,160 @@
+/* Scope Tree cheat tab styles */
+
+/* ── Scroll view ── */
+
+.scope-tree-scroll {
+    flex-grow: 1;
+}
+
+/* ── Node card ── */
+
+.scope-tree-node {
+    border-radius: 6px;
+    border-width: 1px;
+    border-color: rgb(50, 53, 63);
+    padding: 6px;
+    margin-bottom: 4px;
+}
+
+.scope-tree-node-title {
+    font-size: 14px;
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+}
+
+/* ── Group colors: card background + border accent ── */
+
+.scope-tree-panel--general {
+    border-color: rgb(191, 194, 209);
+    background-color: rgb(32, 34, 42);
+}
+
+.scope-tree-panel--feature {
+    border-color: rgb(102, 230, 128);
+    background-color: rgb(22, 38, 28);
+}
+
+.scope-tree-panel--widget {
+    border-color: rgb(120, 199, 219);
+    background-color: rgb(22, 34, 40);
+}
+
+.scope-tree-panel--popup {
+    border-color: rgb(240, 186, 79);
+    background-color: rgb(42, 34, 22);
+}
+
+.scope-tree-panel--nav-button {
+    border-color: rgb(180, 130, 240);
+    background-color: rgb(34, 28, 44);
+}
+
+/* ── Group colors: title text ── */
+
+.scope-tree-title--general    { color: rgb(191, 194, 209); }
+.scope-tree-title--feature    { color: rgb(102, 230, 128); }
+.scope-tree-title--widget     { color: rgb(120, 199, 219); }
+.scope-tree-title--popup      { color: rgb(240, 186, 79); }
+.scope-tree-title--nav-button { color: rgb(180, 130, 240); }
+
+/* ── Additional tags row ── */
+
+.scope-tree-additional-tags {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+}
+
+/* ── Children container (nested inside parent) ── */
+
+.scope-tree-children {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top-width: 1px;
+    border-top-color: rgb(50, 53, 63);
+}
+
+.scope-tree-children > .scope-tree-node {
+    flex-shrink: 1;
+}
+
+/* ── Tag badges ── */
+
+.scope-tree-badge {
+    font-size: 11px;
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-right: 6px;
+    margin-bottom: 2px;
+}
+
+.scope-tree-badge--general {
+    color: rgb(191, 194, 209);
+    background-color: rgb(29, 29, 31);
+}
+
+.scope-tree-badge--feature {
+    color: rgb(102, 230, 128);
+    background-color: rgb(15, 35, 19);
+}
+
+.scope-tree-badge--widget {
+    color: rgb(120, 199, 219);
+    background-color: rgb(18, 30, 33);
+}
+
+.scope-tree-badge--popup {
+    color: rgb(240, 186, 79);
+    background-color: rgb(36, 28, 12);
+}
+
+.scope-tree-badge--nav-button {
+    color: rgb(180, 130, 240);
+    background-color: rgb(27, 20, 36);
+}
+
+/* ── Cheat actions (per scope) ── */
+
+.scope-tree-cheats {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top-width: 1px;
+    border-top-color: rgb(50, 53, 63);
+}
+
+.scope-tree-cheat-button {
+    border-radius: 4px;
+    border-width: 1px;
+    border-color: rgb(70, 95, 140);
+    padding: 4px 10px;
+    margin-right: 6px;
+    margin-bottom: 4px;
+    font-size: 11px;
+    -unity-font-style: bold;
+    background-color: rgb(55, 75, 115);
+    color: rgb(230, 235, 245);
+}
+
+.scope-tree-cheat-button:hover {
+    background-color: rgb(70, 95, 140);
+    border-color: rgb(90, 120, 170);
+}
+
+.scope-tree-cheat-button:active {
+    background-color: rgb(45, 60, 95);
+}
+
+.scope-tree-cheat-info {
+    flex-direction: row;
+    margin-right: 12px;
+    margin-bottom: 4px;
+}
+
+.scope-tree-cheat-info > .unity-label {
+    font-size: 11px;
+    margin-right: 4px;
+}

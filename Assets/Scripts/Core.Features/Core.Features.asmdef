@@ -1,0 +1,18 @@
+{
+  "name": "Core.Features",
+  "references": [
+    "UniTask",
+    "Unity.RenderPipelines.Universal.Runtime",
+    "VContainer",
+    "Core"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
