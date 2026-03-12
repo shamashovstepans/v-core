@@ -22,12 +22,12 @@ namespace Core.Widgets.Screens
         public void Install(IContainerBuilder builder)
         {
             builder.RegisterInstance(_view).AsSelf().As<IWidgetView>().As<IScreenView>();
-            builder.RegisterMainScopeTag(_screenId, ScopeGroup.Widget);
+            builder.RegisterMainScopeTag(_screenId, ScopeGroup.Screen);
             builder.RegisterScopeTag($"View: {_view.GetType().Name}", ScopeGroup.General);
             builder.RegisterBuildCallback(_ =>
             {
                 if (_view is MonoBehaviour mb)
-                    HierarchyScopeMarker.AddTo(mb.gameObject, ScopeGroup.Widget);
+                    HierarchyScopeMarker.AddTo(mb.gameObject, ScopeGroup.Screen);
             });
             _installer.Install(builder);
         }

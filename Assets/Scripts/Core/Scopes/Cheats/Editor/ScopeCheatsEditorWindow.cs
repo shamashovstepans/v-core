@@ -225,6 +225,7 @@ namespace Core.Scopes.Cheats.Editor
             {
                 ScopeGroup.Feature => "feature",
                 ScopeGroup.Widget => "widget",
+                ScopeGroup.Screen => "screen",
                 ScopeGroup.Popup => "popup",
                 ScopeGroup.NavButton => "nav-button",
                 _ => "general"
@@ -237,9 +238,10 @@ namespace Core.Scopes.Cheats.Editor
             {
                 ScopeGroup.Feature => 0,
                 ScopeGroup.Widget => 1,
-                ScopeGroup.Popup => 2,
-                ScopeGroup.NavButton => 3,
-                _ => 4
+                ScopeGroup.Screen => 2,
+                ScopeGroup.Popup => 3,
+                ScopeGroup.NavButton => 4,
+                _ => 5
             };
         }
     }

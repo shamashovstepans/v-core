@@ -5,6 +5,7 @@ namespace Core.Scopes.Tooling
         General,
         Feature,
         Widget,
+        Screen,
         Popup,
         NavButton,
     }

@@ -40,6 +40,7 @@ namespace Core.Scopes.Cheats.Editor
                 ScopeGroup.General => GeneralColor,
                 ScopeGroup.Feature => FeatureColor,
                 ScopeGroup.Widget => WidgetColor,
+                ScopeGroup.Screen => PopupColor,
                 ScopeGroup.Popup => PopupColor,
                 ScopeGroup.NavButton => NavButtonColor,
                 _ => GeneralColor
