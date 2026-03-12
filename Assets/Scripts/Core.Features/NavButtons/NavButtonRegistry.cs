@@ -9,6 +9,9 @@ namespace Core.Widgets.NavButtons
     {
         private readonly Dictionary<string, Dictionary<string, IInstaller>> _installers = new();
 
+        public event Action<string, string, IInstaller> ButtonRegistered;
+        public event Action<string, string> ButtonRemoved;
+
         public IDisposable Register(string group, string buttonId, IInstaller installer)
         {
             if (!_installers.TryGetValue(group, out var groupInstallers))
@@ -17,7 +20,12 @@ namespace Core.Widgets.NavButtons
                 _installers[group] = groupInstallers;
             }
             groupInstallers[buttonId] = installer;
-            return new DisposableToken(() => _installers[group].Remove(buttonId));
+            ButtonRegistered?.Invoke(group, buttonId, installer);
+            return new DisposableToken(() =>
+            {
+                if (_installers.TryGetValue(group, out var installers) && installers.Remove(buttonId))
+                    ButtonRemoved?.Invoke(group, buttonId);
+            });
         }
 
         public IReadOnlyList<(string ButtonId, IInstaller Installer)> GetButtons(string group)

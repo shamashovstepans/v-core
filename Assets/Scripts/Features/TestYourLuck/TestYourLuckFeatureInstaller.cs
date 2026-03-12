@@ -1,6 +1,8 @@
 using System;
 using Core.FeatureManager;
+using Core.Widgets.NavButtons;
 using Core.Widgets.Popups;
+using Features.TestYourLuck.NavButton;
 using Features.TestYourLuck.Popup;
 using Newtonsoft.Json;
 using VContainer;
@@ -15,6 +17,7 @@ namespace Features.TestYourLuck
             builder.Register<TestYourLuckService>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<TestYourLuckCheats>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.RegisterPopup<TestYourLuckPopupInstaller>();
+            builder.RegisterNavButton<TestYourLuckNavButtonInstaller>();
         }
 
         public string Id => FeatureIds.TestYourLuck;

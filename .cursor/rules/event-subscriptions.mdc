@@ -1,0 +1,44 @@
+---
+description: Event subscription pattern - unsubscribe in Dispose, not via disposable token
+globs: **/*.cs
+alwaysApply: false
+---
+
+# Event Subscriptions
+
+For event subscriptions, unsubscribe directly in the `Dispose` method. Do not use `DisposableToken` or add unsubscribe callbacks to `CompositeDisposable`.
+
+## Pattern
+
+```csharp
+// ❌ BAD - using disposable token for unsubscribe
+public void Initialize()
+{
+    _registry.SomeEvent += OnSomeEvent;
+    _subscriptions.Add(new DisposableToken(() => _registry.SomeEvent -= OnSomeEvent));
+}
+
+public void Dispose()
+{
+    _subscriptions.Dispose();
+}
+```
+
+```csharp
+// ✅ GOOD - unsubscribe in Dispose
+public void Initialize()
+{
+    _registry.SomeEvent += OnSomeEvent;
+}
+
+public void Dispose()
+{
+    _registry.SomeEvent -= OnSomeEvent;
+}
+```
+
+## Rationale
+
+- Unsubscribe logic is colocated with the class lifecycle
+- No extra indirection or tokens
+- Clearer ownership: Dispose is the single place for cleanup

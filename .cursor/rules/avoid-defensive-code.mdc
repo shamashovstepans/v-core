@@ -1,0 +1,66 @@
+---
+description: Prefer straightforward code over defensive checks when invariants are guaranteed
+globs: **/*.cs
+alwaysApply: false
+---
+
+# Avoid Defensive Code
+
+Write code that trusts invariants and contracts. Avoid redundant checks, excessive null guards, and "just in case" validation when the caller or design guarantees the condition.
+
+## Examples
+
+```csharp
+// ❌ BAD - defensive null check when dependency is always injected
+public void DoWork()
+{
+    if (_service == null) return;
+    _service.Execute();
+}
+
+// ✅ GOOD - trust DI; if null, fail fast
+public void DoWork()
+{
+    _service.Execute();
+}
+```
+
+```csharp
+// ❌ BAD - TryGetValue when key is guaranteed to exist
+if (_dict.TryGetValue(key, out var value))
+    Process(value);
+
+// ✅ GOOD - direct access when invariant holds
+var value = _dict[key];
+Process(value);
+```
+
+```csharp
+// ❌ BAD - redundant validation of internal state
+private void OnButtonRemoved(string group, string buttonId)
+{
+    if (group != _view.Group) return;
+    if (!_buttons.TryGetValue(buttonId, out var entry)) return;  // redundant if event contract guarantees it
+    // ...
+}
+
+// ✅ GOOD - trust the event contract
+private void OnButtonRemoved(string group, string buttonId)
+{
+    if (group != _view.Group) return;
+    var entry = _buttons[buttonId];
+    // ...
+}
+```
+
+## When Defensive Code Is Appropriate
+
+- Public API boundaries (validate external input)
+- I/O or external system calls
+- Explicitly documented preconditions that callers might violate
+
+## Rationale
+
+- Less noise, easier to read
+- Fail fast surfaces bugs instead of hiding them
+- Invariants enforced once (design, DI, contracts) instead of everywhere

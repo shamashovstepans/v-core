@@ -17,8 +17,8 @@ namespace Core.Widgets.NavButtons
         private readonly INavButtonRegistry _navButtonRegistry;
         private readonly NavButtonsWidgetView _view;
 
-        private readonly List<IObjectResolver> _scopes = new();
-        private readonly List<GameObject> _instances = new();
+        private readonly Dictionary<string, (IObjectResolver Scope, GameObject Instance)> _buttons = new();
+        private readonly CompositeDisposable _subscriptions = new();
 
         public NavButtonsWidgetPresenter(
             IScopeFactory scopeFactory,
@@ -32,31 +32,60 @@ namespace Core.Widgets.NavButtons
 
         public void Initialize()
         {
+            _navButtonRegistry.ButtonRegistered += OnButtonRegistered;
+            _navButtonRegistry.ButtonRemoved += OnButtonRemoved;
+            _subscriptions.Add(new DisposableToken(() => _navButtonRegistry.ButtonRegistered -= OnButtonRegistered));
+            _subscriptions.Add(new DisposableToken(() => _navButtonRegistry.ButtonRemoved -= OnButtonRemoved));
+
             var buttons = _navButtonRegistry.GetButtons(_view.Group);
             foreach (var (buttonId, installer) in buttons)
-            {
-                var path = $"{NavButtonPrefabPath}/{buttonId}";
-                var prefab = Resources.Load<GameObject>(path);
-                var instance = Object.Instantiate(prefab, _view.Container);
-
-                var buttonView = instance.GetComponent<INavButtonView>();
-                var scopeInstaller = new NavButtonScopeInstaller(buttonId, buttonView, installer);
-
-                var scope = _scopeFactory.CreateScope(scopeInstaller);
-                _scopes.Add(scope);
-                _instances.Add(instance);
-            }
+                AddButton(buttonId, installer);
         }
 
         public void Dispose()
         {
-            for (var i = _instances.Count - 1; i >= 0; i--)
+            _subscriptions.Dispose();
+            foreach (var (scope, instance) in _buttons.Values)
             {
-                Object.Destroy(_instances[i]);
-                _scopes[i].Dispose();
+                scope.Dispose();
+                Object.Destroy(instance);
             }
-            _instances.Clear();
-            _scopes.Clear();
+            _buttons.Clear();
+        }
+
+        private void OnButtonRegistered(string group, string buttonId, IInstaller installer)
+        {
+            if (group != _view.Group)
+                return;
+            if (_buttons.TryGetValue(buttonId, out var existing))
+            {
+                _buttons.Remove(buttonId);
+                existing.Scope.Dispose();
+                Object.Destroy(existing.Instance);
+            }
+            AddButton(buttonId, installer);
+        }
+
+        private void OnButtonRemoved(string group, string buttonId)
+        {
+            if (group != _view.Group || !_buttons.TryGetValue(buttonId, out var entry))
+                return;
+            _buttons.Remove(buttonId);
+            entry.Scope.Dispose();
+            Object.Destroy(entry.Instance);
+        }
+
+        private void AddButton(string buttonId, IInstaller installer)
+        {
+            var path = $"{NavButtonPrefabPath}/{buttonId}";
+            var prefab = Resources.Load<GameObject>(path);
+            if (prefab == null)
+                return;
+            var instance = Object.Instantiate(prefab, _view.Container);
+            var buttonView = instance.GetComponent<INavButtonView>();
+            var scopeInstaller = new NavButtonScopeInstaller(buttonId, buttonView, installer);
+            var scope = _scopeFactory.CreateScope(scopeInstaller);
+            _buttons[buttonId] = (scope, instance);
         }
     }
 }

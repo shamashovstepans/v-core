@@ -1,12 +1,11 @@
 using Core.Widgets.NavButtons;
-using Core.Widgets.Popups;
 using VContainer;
 
 namespace Features.TestFeature.NavButton
 {
     internal class TestPopupNavButtonInstaller : INavButtonInstaller
     {
-        public string Id => PopupIds.TestPopup;
+        public string Id => NavButtonIds.TestPopup;
 
         public string Group => "left";
 

@@ -1,3 +1,4 @@
+using System;
 using Core.Utils;
 using VContainer;
 
@@ -16,6 +17,12 @@ namespace Core.Widgets.NavButtons
                 disposable.Add(resolver.Resolve<INavButtonRegistry>().Register(installer.Group, installer.Id, installer));
             });
             builder.RegisterDisposeCallback(_ => disposable.Dispose());
+        }
+
+        /// <summary>Register a nav button at runtime. Call Dispose on the return value to remove it.</summary>
+        public static IDisposable RegisterNavButton(this INavButtonRegistry registry, INavButtonInstaller installer)
+        {
+            return registry.Register(installer.Group, installer.Id, installer);
         }
     }
 }
