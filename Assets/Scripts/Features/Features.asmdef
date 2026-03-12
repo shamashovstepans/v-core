@@ -4,6 +4,7 @@
     "Core",
     "Core.Features",
     "UniTask",
+    "Unity.InputSystem",
     "Unity.TextMeshPro",
     "VContainer"
   ]
