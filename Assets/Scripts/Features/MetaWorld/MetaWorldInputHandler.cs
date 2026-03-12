@@ -29,19 +29,17 @@ namespace Features.MetaWorld
 
             if (GetPointerDown(out var pos))
             {
-                if (IsOverUI(pos))
-                    return;
-
                 if (RaycastBunny(camera, pos, out var bunny))
                 {
                     bunny.Bounce();
+                    return;
                 }
-                else if (RaycastEnvironment(camera, pos))
-                {
-                    _isDragging = true;
-                    _dragStartPosition = pos;
-                    _cameraTilt.BeginDrag();
-                }
+                if (IsOverUI(pos))
+                    return;
+
+                _isDragging = true;
+                _dragStartPosition = pos;
+                _cameraTilt.BeginDrag();
             }
             else if (_isDragging && GetPointerPosition(out pos))
             {
@@ -59,17 +57,15 @@ namespace Features.MetaWorld
         {
             bunny = null;
             var ray = cam.ScreenPointToRay(screenPos);
-            if (!Physics.Raycast(ray, out var hit, 1000f, raycastLayers))
-                return false;
-
-            bunny = hit.collider.GetComponentInParent<BunnyBounce>();
-            return bunny != null;
-        }
-
-        private bool RaycastEnvironment(Camera cam, Vector2 screenPos)
-        {
-            var ray = cam.ScreenPointToRay(screenPos);
-            return Physics.Raycast(ray, 1000f, raycastLayers);
+            var hits = Physics.RaycastAll(ray, 1000f, raycastLayers);
+            System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+            foreach (var hit in hits)
+            {
+                bunny = hit.collider.GetComponentInParent<BunnyBounce>();
+                if (bunny != null)
+                    return true;
+            }
+            return false;
         }
 
         private static bool GetPointerDown(out Vector2 pos)
